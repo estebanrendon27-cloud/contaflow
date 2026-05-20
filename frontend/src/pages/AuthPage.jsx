@@ -54,7 +54,7 @@ export default function AuthPage() {
     try {
       await registerUser({ ...data, rol });
       toast.success('¡Cuenta creada! Configura tu empresa.');
-      navigate('/onboarding');
+      navigate('/dashboard');
     } catch (e) {
       toast.error(e.response?.data?.error || 'Error al registrarse');
     } finally { setLoading(false); }
@@ -316,3 +316,4 @@ function Btn({ loading, children }) {
     </button>
   );
 }
+
