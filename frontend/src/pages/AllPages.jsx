@@ -992,4 +992,4 @@ export function ConfigPage() {
 }
 
 // ── ONBOARDING PAGE ───────────────────────────────────────────────────────────
-export function OnboardingPage() { const navigate = (window.location.href = "/dashboard); return null; }
+export function OnboardingPage(){React.useEffect(()=>{window.location.replace('/dashboard');},[]);return null;}
