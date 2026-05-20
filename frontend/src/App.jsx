@@ -39,7 +39,7 @@ const ProtectedRoute = () => {
 // Ruta que requiere empresa configurada
 const RequireEmpresa = () => {
   const { empresaActual } = useEmpresaStore();
-  if (!empresaActual) return <Navigate to="/onboarding" replace />;
+  
   return <Outlet />;
 };
 
@@ -99,3 +99,4 @@ export default function App() {
     </QueryClientProvider>
   );
 }
+
