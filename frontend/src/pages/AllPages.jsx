@@ -992,5 +992,4 @@ export function ConfigPage() {
 }
 
 // ── ONBOARDING PAGE ───────────────────────────────────────────────────────────
-export function OnboardingPage(){React.useEffect(()=>{window.location.replace('/dashboard');},[]);return null;}
-
+export function OnboardingPage(){window.location.replace('/dashboard');return null;}
