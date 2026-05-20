@@ -1,0 +1,40 @@
+{
+  "name": "contaflow-backend",
+  "version": "1.0.0",
+  "description": "ContaFlow — Plataforma contable inteligente para Colombia",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "test": "jest --experimental-vm-modules",
+    "migrate": "node src/config/migrate.js",
+    "seed": "node src/config/seed.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.97.1",
+    "axios": "^1.6.2",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.3",
+    "pdf-parse": "^1.1.1",
+    "pg": "^8.11.3",
+    "uuid": "^9.0.1",
+    "winston": "^3.11.0",
+    "xlsx": "^0.18.5",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.14"
+  }
+}

@@ -1,0 +1,75 @@
+version: '3.9'
+
+services:
+
+  # ─── BASE DE DATOS ────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: contaflow_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       contaflow_db
+      POSTGRES_USER:     contaflow_user
+      POSTGRES_PASSWORD: contaflow_pass_2025
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U contaflow_user -d contaflow_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── BACKEND ─────────────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: contaflow_api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV:          production
+      PORT:              3001
+      DB_HOST:           postgres
+      DB_PORT:           5432
+      DB_NAME:           contaflow_db
+      DB_USER:           contaflow_user
+      DB_PASSWORD:       contaflow_pass_2025
+      JWT_SECRET:        ${JWT_SECRET:-cf_jwt_secret_cambiar_en_produccion_64chars_minimo}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-cf_refresh_secret_diferente_cambiar_produccion}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      FRONTEND_URL:      http://localhost:5173
+      ALLOWED_ORIGINS:   http://localhost:5173,http://localhost:3000
+    ports:
+      - "3001:3001"
+    volumes:
+      - uploads_data:/app/uploads
+      - logs_data:/app/logs
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ─── FRONTEND ─────────────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: contaflow_web
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: http://localhost:3001/api/v1
+    ports:
+      - "5173:80"
+
+volumes:
+  postgres_data:
+  uploads_data:
+  logs_data:
