@@ -13,13 +13,13 @@ export const useAuthStore = create(
       login: async (email, password) => {
         const { data } = await api.post('/auth/login', { email, password });
         set({ user: data.user, token: data.token, isAuth: true });
-        api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+        api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;localStorage.setItem('cf_token', data.token);
       },
 
       register: async (nombre, email, password, rol) => {
         const { data } = await api.post('/auth/register', { nombre, email, password, rol });
         set({ user: data.user, token: data.token, isAuth: true });
-        api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+        api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;localStorage.setItem('cf_token', data.token);
       },
 
       loadMe: async () => {
