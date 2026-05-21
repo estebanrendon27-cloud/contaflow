@@ -368,7 +368,7 @@ const migrations = [
   descripcion     VARCHAR(255) NOT NULL,
   formulario      VARCHAR(20),
   fecha_vence     DATE NOT NULL,
-  dias_restantes  INTEGER GENERATED ALWAYS AS (fecha_vence - CURRENT_DATE) STORED,
+  
   monto_estimado  NUMERIC(18,2),
   presentado      BOOLEAN DEFAULT FALSE,
   presentado_at   TIMESTAMPTZ,
