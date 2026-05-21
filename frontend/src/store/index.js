@@ -60,7 +60,7 @@ export const useEmpresaStore = create(
           set({ empresas: lista });
           if (lista.length > 0 && !get().empresaActual) {
             set({ empresaActual: lista[0] });
-            api.defaults.headers.common['X-Empresa-Id'] = lista[0].id;
+            api.defaults.headers.common['X-Empresa-Id'] = lista[0].id;localStorage.setItem('cf_empresa_id', lista[0].id);
           }
         } catch (e) {
           console.error('Error cargando empresas', e);
@@ -75,12 +75,14 @@ export const useEmpresaStore = create(
           empresaActual: nueva,
         }));
         api.defaults.headers.common['X-Empresa-Id'] = nueva.id;
+        localStorage.setItem('cf_empresa_id', nueva.id);
         return nueva;
       },
 
       setEmpresa: (empresa) => {
         set({ empresaActual: empresa });
         api.defaults.headers.common['X-Empresa-Id'] = empresa.id;
+        localStorage.setItem('cf_empresa_id', empresa.id);
       },
     }),
     {
