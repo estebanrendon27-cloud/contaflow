@@ -626,10 +626,9 @@ export function NominaPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <PageHeader title="Nómina &" highlight="PILA" sub={empresaActual?.razon_social}>
-        <button className="flex items-center gap-2 bg-[#00E5B0] text-[#0A0E1A] px-4 py-2 rounded-xl
-                           text-sm font-semibold transition-all hover:shadow-[0_6px_20px_rgba(0,229,176,0.3)]">
-          📄 Generar PILA
-        </button>
+   <button onClick={async () => { if (!ultimo) return toast.error('No hay períodos de nómina'); try { const { data } = await nominaService.generarPILA(ultimo.id); descargarBlob(data, `pila_${ultimo.mes}_${ultimo.anio}.xlsx`); toast.success('PILA generada correctamente'); } catch { toast.error('Error generando PILA'); } }} className="flex items-center gap-2 bg-[#00E5B0] text-[#0A0E1A] px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:shadow-[0_6px_20px_rgba(0,229,176,0.3)]">
+  📄 Generar PILA
+</button>
       </PageHeader>
 
       {ultimo ? (
