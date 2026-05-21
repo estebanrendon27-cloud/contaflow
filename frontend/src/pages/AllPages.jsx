@@ -12,6 +12,19 @@ const selCls = inputBaseCls;
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 import { useEmpresaStore } from '../store';
 import { fmt } from '../utils/format';
+function PageHeader({ title, highlight, sub, children }) {
+  return (
+    <div className="flex items-center justify-between mb-6">
+      <div>
+        <h1 className="text-2xl font-black text-[#F0F4FF]" style={{ fontFamily:'Syne,sans-serif' }}>
+          {title} <span className="text-[#00E5B0]">{highlight}</span>
+        </h1>
+        {sub && <p className="text-sm text-[#8892AA] mt-0.5">{sub}</p>}
+      </div>
+      {children && <div className="flex items-center gap-2">{children}</div>}
+    </div>
+  );
+}
 
 const TABS = [
   { id:'ingresos', label:'💰 Ingresos',     hint:'Ventas, facturas, anticipos' },
