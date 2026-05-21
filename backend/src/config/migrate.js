@@ -419,6 +419,7 @@ END $$`,
     CREATE TRIGGER trg_transacciones_updated_at BEFORE UPDATE ON transacciones FOR EACH ROW EXECUTE FUNCTION update_updated_at();
   END IF;
 END $$`,
+`ALTER TABLE vencimientos_tributarios DROP COLUMN IF EXISTS dias_restantes`,
 
 ];
 
