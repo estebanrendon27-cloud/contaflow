@@ -114,10 +114,10 @@ export default function AppLayout() {
             )}
           </div>
           <div className="flex-1" />
-          <button className="w-8 h-8 rounded-lg border border-white/7 flex items-center justify-center text-[#8892AA] hover:bg-[#1E2A42] transition-colors">
+         <button onClick={() => toast('🔍 Buscador próximamente', {icon: '🔍'})} className="w-8 h-8 rounded-lg border border-white/7 flex items-center justify-center text-[#8892AA] hover:bg-[#1E2A42] transition-colors">
             <Search size={15}/>
           </button>
-          <button className="w-8 h-8 rounded-lg border border-white/7 flex items-center justify-center text-[#8892AA] hover:bg-[#1E2A42] transition-colors relative">
+          <button onClick={() => toast('🔔 No tienes notificaciones nuevas', {icon: '🔔'})} className="w-8 h-8 rounded-lg border border-white/7 flex items-center justify-center text-[#8892AA] hover:bg-[#1E2A42] transition-colors relative">
             <Bell size={15}/>
             <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-[#FF5078]" />
           </button>
