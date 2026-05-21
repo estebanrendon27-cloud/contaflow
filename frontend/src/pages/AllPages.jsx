@@ -6,7 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Upload, FileSpreadsheet, CheckCircle, AlertCircle, Download, Loader2, X } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { excelService, descargarBlob } from '../services/api';
+import { excelService, descargarBlob, reportesService, nominaService } from '../services/api';
 const inputBaseCls = "w-full bg-[#141C2E] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#F0F4FF] placeholder-[#8892AA] focus:outline-none focus:border-[#00E5B0]/50 transition-colors";
 const selCls = inputBaseCls;
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
