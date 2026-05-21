@@ -58,10 +58,13 @@ export const useEmpresaStore = create(
           const { data } = await api.get('/empresas');
           const lista = data.empresas || [];
           set({ empresas: lista });
-          if (lista.length > 0 && !get().empresaActual) {
-            set({ empresaActual: lista[0] });
-            api.defaults.headers.common['X-Empresa-Id'] = lista[0].id;localStorage.setItem('cf_empresa_id', lista[0].id);
-          }
+          if (lista.length > 0) {
+  if (!get().empresaActual) {
+    set({ empresaActual: lista[0] });
+  }
+  api.defaults.headers.common['X-Empresa-Id'] = (get().empresaActual || lista[0]).id;
+  localStorage.setItem('cf_empresa_id', (get().empresaActual || lista[0]).id);
+}
         } catch (e) {
           console.error('Error cargando empresas', e);
         }
