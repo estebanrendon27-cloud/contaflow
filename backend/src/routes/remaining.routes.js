@@ -420,29 +420,24 @@ reportesRouter.get('/flujo-caja', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// GET /reportes/exportar/:tipo — exportar a Excel
 reportesRouter.get('/exportar/:tipo', async (req, res, next) => {
   try {
     const eid = req.headers['x-empresa-id'];
+    if (!eid) return res.status(400).json({ error: 'Empresa requerida' });
     const { tipo } = req.params;
-    const XLSX = (await import('xlsx')).default;
-    const wb = XLSX.utils.book_new();
-
-    if (tipo === 'transacciones') {
-      const { rows } = await query(
-        `SELECT fecha,tipo,descripcion,tercero_nombre,cuenta_puc,debito,credito,
-                iva_tarifa,iva_valor,retefuente_valor,estado
-         FROM transacciones WHERE empresa_id=$1 ORDER BY fecha DESC LIMIT 5000`, [eid]
-      );
-      const ws = XLSX.utils.json_to_sheet(rows);
-      XLSX.utils.book_append_sheet(wb, ws, 'Transacciones');
-    }
-
-    const buf = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
-    res.setHeader('Content-Disposition', `attachment; filename=contaflow_${tipo}_${Date.now()}.xlsx`);
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.send(buf);
-  } catch (err) { next(err); }
+    const { rows } = await query(
+      `SELECT fecha, descripcion, tipo, debito, credito, debito - credito as saldo
+       FROM transacciones WHERE empresa_id=$1 ORDER BY fecha DESC LIMIT 1000`, [eid]
+    );
+    const headers = ['Fecha', 'Descripcion', 'Tipo', 'Debito', 'Credito', 'Saldo'];
+    const csv = [
+      headers.join(','),
+      ...rows.map(r => [r.fecha, `"${(r.descripcion||'').replace(/"/g,'')}"`, r.tipo, r.debito, r.credito, r.saldo].join(','))
+    ].join('\n');
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename=contaflow_${tipo}.csv`);
+    res.send('\uFEFF' + csv);
+  } catch (err) { console.error('Export error:', err.message); next(err); }
 });
 
 /**
