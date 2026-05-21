@@ -718,10 +718,11 @@ export function ReportesPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <PageHeader title="Reportes" highlight="Contables" sub={empresaActual?.razon_social}>
-        <button className="flex items-center gap-2 bg-transparent border border-white/10 text-[#F0F4FF]
-                           px-3 py-2 rounded-xl text-sm hover:bg-[#1E2A42] transition-colors">
-          <Download size={14}/> Exportar Excel
-        </button>
+       <button onClick={async () => { try { const { data } = await reportesService.exportar(tab); descargarBlob(data, `contaflow_${tab}_${new Date().toISOString().slice(0,10)}.xlsx`); } catch { toast.error('Error exportando'); } }}
+        className="flex items-center gap-2 bg-transparent border border-white/10 text-[#F0F4FF]
+                   px-3 py-2 rounded-xl text-sm hover:bg-[#1E2A42] transition-colors">
+  <Download size={14}/> Exportar Excel
+</button>
       </PageHeader>
 
       <div className="flex gap-1 bg-[#141C2E] border border-white/7 rounded-xl p-1 mb-6 w-fit">
