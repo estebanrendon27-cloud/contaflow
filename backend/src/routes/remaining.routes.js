@@ -508,3 +508,33 @@ iaRouter.post('/analizar', async (req, res, next) => {
     res.json(resultado);
   } catch (err) { next(err); }
 });
+
+
+// GET /reportes/exportar/:tipo — exportar reporte en Excel
+reportesRouter.get('/exportar/:tipo', async (req, res, next) => {
+  try {
+    const eid = req.headers['x-empresa-id'];
+    if (!eid) return res.status(400).json({ error: 'Empresa requerida' });
+    const { tipo } = req.params;
+    const ExcelJS = await import('exceljs');
+    const wb = new ExcelJS.default.Workbook();
+    const ws = wb.addWorksheet(tipo.toUpperCase());
+    ws.columns = [
+      { header: 'Concepto', key: 'concepto', width: 40 },
+      { header: 'Valor', key: 'valor', width: 20 },
+    ];
+    if (tipo === 'balance') {
+      const { rows } = await query(`SELECT descripcion as concepto, debito - credito as valor FROM transacciones WHERE empresa_id=$1`, [eid]);
+      rows.forEach(r => ws.addRow(r));
+    } else if (tipo === 'pyg') {
+      const { rows } = await query(`SELECT tipo as concepto, SUM(debito - credito) as valor FROM transacciones WHERE empresa_id=$1 GROUP BY tipo`, [eid]);
+      rows.forEach(r => ws.addRow(r));
+    } else {
+      ws.addRow({ concepto: 'Sin datos', valor: 0 });
+    }
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename=contaflow_${tipo}.xlsx`);
+    await wb.xlsx.write(res);
+    res.end();
+  } catch (err) { next(err); }
+});
