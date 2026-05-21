@@ -999,7 +999,7 @@ export function ConfigPage() {
               <div className="text-sm font-semibold text-[#F0F4FF]">{s.title}</div>
               <div className="text-xs text-[#8892AA] mt-0.5">{s.desc}</div>
             </div>
-            <button className="text-xs text-[#00E5B0] font-medium hover:underline">{s.action} →</button>
+           <button onClick={() => toast.success(`${s.action}: próximamente disponible`)} className="text-xs text-[#00E5B0] font-medium hover:underline">{s.action} →</button>
           </div>
         ))}
       </div>
