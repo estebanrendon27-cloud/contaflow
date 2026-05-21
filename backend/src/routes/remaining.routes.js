@@ -532,5 +532,5 @@ reportesRouter.get('/exportar/:tipo', async (req, res, next) => {
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader('Content-Disposition', `attachment; filename=contaflow_${tipo}.csv`);
     res.send('\uFEFF' + csv);
-  } catch (err) { next(err); }
+  } catch (err) { console.error('Export error:', err.message, err.stack); next(err); }
 });
