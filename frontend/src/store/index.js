@@ -1,113 +1,91 @@
-/**
- * ContaFlow — Store global con Zustand
- */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { authService, empresaService } from '../services/api';
+import api from '../services/api';
 
-// ─── AUTH STORE ───────────────────────────────────────────────────────────────
+// ── AUTH STORE ──────────────────────────────────────────────────────────────
 export const useAuthStore = create(
   persist(
     (set, get) => ({
-      user:         null,
-      token:        null,
-      refreshToken: null,
-      isAuth:       false,
+      user:   null,
+      token:  null,
+      isAuth: false,
 
       login: async (email, password) => {
-        const { data } = await authService.login({ email, password });
-        localStorage.setItem('cf_token', data.token);
-        localStorage.setItem('cf_refresh_token', data.refreshToken);
-        set({ user: data.user, token: data.token, refreshToken: data.refreshToken, isAuth: true });
-        return data;
+        const { data } = await api.post('/auth/login', { email, password });
+        set({ user: data.user, token: data.token, isAuth: true });
+        api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
       },
 
-      register: async (formData) => {
-        const { data } = await authService.register(formData);
-        localStorage.setItem('cf_token', data.token);
-        localStorage.setItem('cf_refresh_token', data.refreshToken);
-        set({ user: data.user, token: data.token, refreshToken: data.refreshToken, isAuth: true });
-        return data;
-      },
-
-      logout: () => {
-        localStorage.removeItem('cf_token');
-        localStorage.removeItem('cf_refresh_token');
-        localStorage.removeItem('cf_empresa_id');
-        set({ user: null, token: null, refreshToken: null, isAuth: false });
-        useEmpresaStore.getState().reset();
+      register: async (nombre, email, password, rol) => {
+        const { data } = await api.post('/auth/register', { nombre, email, password, rol });
+        set({ user: data.user, token: data.token, isAuth: true });
+        api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
       },
 
       loadMe: async () => {
         try {
-          const { data } = await authService.me();
+          const { token } = get();
+          if (!token) return;
+          api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          const { data } = await api.get('/auth/me');
           set({ user: data.user, isAuth: true });
-          return data;
-        } catch { get().logout(); }
+        } catch {
+          set({ user: null, token: null, isAuth: false });
+        }
+      },
+
+      logout: () => {
+        set({ user: null, token: null, isAuth: false });
+        delete api.defaults.headers.common['Authorization'];
       },
     }),
-    { name: 'cf-auth', partialize: (s) => ({ user: s.user, token: s.token, isAuth: s.isAuth }) }
+    {
+      name: 'contaflow-auth',
+      partialize: (s) => ({ token: s.token, user: s.user, isAuth: s.isAuth }),
+    }
   )
 );
 
-// ─── EMPRESA STORE ────────────────────────────────────────────────────────────
+// ── EMPRESA STORE ───────────────────────────────────────────────────────────
 export const useEmpresaStore = create(
   persist(
     (set, get) => ({
-      empresaActual: null,
       empresas:      [],
-      loading:       false,
-
-      setEmpresa: (empresa) => {
-        localStorage.setItem('cf_empresa_id', empresa.id);
-        set({ empresaActual: empresa });
-      },
+      empresaActual: null,
 
       cargarEmpresas: async () => {
-        set({ loading: true });
         try {
-          const { data } = await empresaService.listar();
-          set({ empresas: data.empresas });
-          // Si solo hay una empresa, seleccionarla automáticamente
-          if (data.empresas.length === 1 && !get().empresaActual) {
-            get().setEmpresa(data.empresas[0]);
+          const { data } = await api.get('/empresas');
+          const lista = data.empresas || [];
+          set({ empresas: lista });
+          if (lista.length > 0 && !get().empresaActual) {
+            set({ empresaActual: lista[0] });
+            api.defaults.headers.common['X-Empresa-Id'] = lista[0].id;
           }
-        } finally { set({ loading: false }); }
+        } catch (e) {
+          console.error('Error cargando empresas', e);
+        }
       },
 
-      reset: () => set({ empresaActual: null, empresas: [] }),
+      crearEmpresa: async (form) => {
+        const { data } = await api.post('/empresas', form);
+        const nueva = data.empresa;
+        set(s => ({
+          empresas: [...s.empresas, nueva],
+          empresaActual: nueva,
+        }));
+        api.defaults.headers.common['X-Empresa-Id'] = nueva.id;
+        return nueva;
+      },
+
+      setEmpresa: (empresa) => {
+        set({ empresaActual: empresa });
+        api.defaults.headers.common['X-Empresa-Id'] = empresa.id;
+      },
     }),
-    { name: 'cf-empresa', partialize: (s) => ({ empresaActual: s.empresaActual }) }
+    {
+      name: 'contaflow-empresa',
+      partialize: (s) => ({ empresaActual: s.empresaActual }),
+    }
   )
 );
-
-// ─── UI STORE ─────────────────────────────────────────────────────────────────
-export const useUIStore = create((set) => ({
-  sidebarOpen: true,
-  modalOpen:   null,
-  loading:     {},
-
-  toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
-  openModal:  (id)  => set({ modalOpen: id }),
-  closeModal: ()    => set({ modalOpen: null }),
-
-  setLoading: (key, val) => set((s) => ({ loading: { ...s.loading, [key]: val } })),
-  isLoading:  (key)      => useUIStore.getState().loading[key] || false,
-}));
-
-// ─── DASHBOARD STORE ──────────────────────────────────────────────────────────
-export const useDashboardStore = create((set) => ({
-  data:    null,
-  loading: false,
-  error:   null,
-
-  cargar: async (empresaId) => {
-    set({ loading: true, error: null });
-    try {
-      const { data } = await empresaService.dashboard(empresaId);
-      set({ data, loading: false });
-    } catch (err) {
-      set({ error: err.message, loading: false });
-    }
-  },
-}));
