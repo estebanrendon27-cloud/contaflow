@@ -1,7 +1,7 @@
 ﻿import { query } from '../config/database.js';
 import { logger } from '../utils/logger.js';
 
-const GROQ_API_KEY = process.env.ANTHROPIC_API_KEY;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const MODEL = 'llama-3.3-70b-versatile';
 
 const SYSTEM_CONTABLE = `Eres un experto contador publico colombiano. Conoces el PUC (Decreto 2649), NIIF para PYMES, Estatuto Tributario, retencion en la fuente (Art. 383, 392, 401 E.T.), IVA (Art. 468 E.T.), nomina (CST, Ley 100). UVT 2025: $47.065. SMMLV 2025: $1.300.000. Responde en espanol, preciso y practico.`;
