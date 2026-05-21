@@ -1,5 +1,5 @@
-/**
- * ContaFlow — ExcelPage.jsx
+﻿/**
+ * ContaFlow â€” ExcelPage.jsx
  */
 import { useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -27,15 +27,15 @@ function PageHeader({ title, highlight, sub, children }) {
 }
 
 const TABS = [
-  { id:'ingresos', label:'💰 Ingresos',     hint:'Ventas, facturas, anticipos' },
-  { id:'gastos',   label:'💳 Gastos',        hint:'Compras, servicios, gastos' },
-  { id:'nomina',   label:'👥 Nómina',        hint:'Empleados, salarios, PILA' },
-  { id:'bancario', label:'🏦 Conciliación', hint:'Extracto bancario' },
+  { id:'ingresos', label:'ðŸ’° Ingresos',     hint:'Ventas, facturas, anticipos' },
+  { id:'gastos',   label:'ðŸ’³ Gastos',        hint:'Compras, servicios, gastos' },
+  { id:'nomina',   label:'ðŸ‘¥ NÃ³mina',        hint:'Empleados, salarios, PILA' },
+  { id:'bancario', label:'ðŸ¦ ConciliaciÃ³n', hint:'Extracto bancario' },
 ];
 
 const PASOS = [
   'Leyendo y validando archivo...',
-  'Detectando columnas automáticamente...',
+  'Detectando columnas automÃ¡ticamente...',
   'Clasificando cuentas PUC con IA...',
   'Calculando IVA y retenciones...',
   'Generando asientos contables...',
@@ -85,7 +85,7 @@ export default function ExcelPage() {
     try {
       const { data } = await excelService.upload(tab, fd);
       setResult({ ok: true, archivoId: data.archivoId });
-      toast.success('¡Archivo procesado correctamente!');
+      toast.success('Â¡Archivo procesado correctamente!');
       qc.invalidateQueries(['archivos']);
       qc.invalidateQueries(['dashboard']);
     } catch {
@@ -104,7 +104,7 @@ export default function ExcelPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <PageHeader title="Carga de" highlight="Archivos Excel"
-                  sub={`${empresaActual?.razon_social} · ${MESES[mes-1]} ${anio}`}>
+                  sub={`${empresaActual?.razon_social} Â· ${MESES[mes-1]} ${anio}`}>
         <button onClick={() => descargar(tab)}
                 className="flex items-center gap-2 bg-transparent border border-white/10 text-[#F0F4FF]
                            px-3 py-2 rounded-xl text-sm hover:bg-[#1E2A42] transition-colors">
@@ -128,10 +128,10 @@ export default function ExcelPage() {
         {/* UPLOAD + PROCESO */}
         <div className="lg:col-span-3 space-y-4">
 
-          {/* Período nómina */}
+          {/* PerÃ­odo nÃ³mina */}
           {tab === 'nomina' && (
             <div className="bg-[#141C2E] border border-white/7 rounded-xl p-4">
-              <div className="text-sm font-bold mb-3" style={{ fontFamily:'Syne,sans-serif' }}>📅 Período de nómina</div>
+              <div className="text-sm font-bold mb-3" style={{ fontFamily:'Syne,sans-serif' }}>ðŸ“… PerÃ­odo de nÃ³mina</div>
               <div className="grid grid-cols-2 gap-3">
                 <select value={mes} onChange={e => setMes(e.target.value)} className={selCls}>
                   {MESES.map((m,i) => <option key={i} value={i+1}>{m}</option>)}
@@ -157,9 +157,9 @@ export default function ExcelPage() {
                    accept=".xlsx,.xls,.csv" onChange={e => handleFile(e.target.files[0])} />
             {file ? (
               <div>
-                <div className="text-3xl mb-2">📊</div>
+                <div className="text-3xl mb-2">ðŸ“Š</div>
                 <div className="text-sm font-semibold text-[#00E5B0]">{file.name}</div>
-                <div className="text-xs text-[#8892AA] mt-1">{(file.size/1024).toFixed(1)} KB · Listo para procesar</div>
+                <div className="text-xs text-[#8892AA] mt-1">{(file.size/1024).toFixed(1)} KB Â· Listo para procesar</div>
                 <button onClick={e => { e.stopPropagation(); setFile(null); setResult(null); }}
                         className="mt-3 text-xs text-[#FF5078] hover:underline flex items-center gap-1 mx-auto">
                   <X size={12}/> Quitar archivo
@@ -168,7 +168,7 @@ export default function ExcelPage() {
             ) : (
               <div>
                 <Upload size={32} className="mx-auto mb-3 text-[#8892AA]" />
-                <div className="text-sm font-semibold text-[#F0F4FF] mb-1">Arrastra tu archivo aquí</div>
+                <div className="text-sm font-semibold text-[#F0F4FF] mb-1">Arrastra tu archivo aquÃ­</div>
                 <div className="text-xs text-[#8892AA] mb-3">{TABS.find(t=>t.id===tab)?.hint}</div>
                 <div className="flex gap-2 justify-center">
                   {['.xlsx','.xls','.csv'].map(e => (
@@ -183,7 +183,7 @@ export default function ExcelPage() {
           {/* PASOS DE PROCESAMIENTO */}
           <div className="bg-[#141C2E] border border-white/7 rounded-xl overflow-hidden">
             <div className="px-4 py-3 border-b border-white/4">
-              <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>⚙️ Procesamiento automático</span>
+              <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>âš™ï¸ Procesamiento automÃ¡tico</span>
             </div>
             <div className="p-4 space-y-3">
               {PASOS.map((p, i) => {
@@ -196,7 +196,7 @@ export default function ExcelPage() {
                       ${done   ? 'bg-[#00E5B0] border-[#00E5B0] text-[#0A0E1A]' :
                         active ? 'border-[#3D7BFF] text-[#3D7BFF]' :
                         'border-white/15 text-[#8892AA]'}`}>
-                      {done ? '✓' : active ? <Loader2 size={12} className="animate-spin"/> : i+1}
+                      {done ? 'âœ“' : active ? <Loader2 size={12} className="animate-spin"/> : i+1}
                     </div>
                     <div className="pt-0.5">
                       <div className={`text-sm ${active ? 'text-[#3D7BFF]' : done ? 'text-[#F0F4FF]' : 'text-[#8892AA]'}`}>{p}</div>
@@ -222,20 +222,20 @@ export default function ExcelPage() {
               <div className="flex items-center gap-2 mb-3">
                 <CheckCircle size={16} className="text-[#00E5B0]" />
                 <span className="text-sm font-bold text-[#00E5B0]" style={{ fontFamily:'Syne,sans-serif' }}>
-                  ¡Procesado correctamente!
+                  Â¡Procesado correctamente!
                 </span>
               </div>
               <p className="text-xs text-[#8892AA]">
-                Los registros han sido clasificados en el PUC colombiano y están disponibles en los reportes.
+                Los registros han sido clasificados en el PUC colombiano y estÃ¡n disponibles en los reportes.
               </p>
               <div className="flex gap-2 mt-3">
                 <button className="flex-1 py-2 bg-[#00E5B0]/10 text-[#00E5B0] rounded-lg text-xs font-medium
                                    hover:bg-[#00E5B0]/20 transition-colors">
-                  👁 Ver libro diario
+                  ðŸ‘ Ver libro diario
                 </button>
                 <button className="flex-1 py-2 bg-[#00E5B0] text-[#0A0E1A] rounded-lg text-xs font-medium
                                    hover:shadow-[0_4px_12px_rgba(0,229,176,0.3)] transition-all">
-                  ⬇️ Exportar asientos
+                  â¬‡ï¸ Exportar asientos
                 </button>
               </div>
             </div>
@@ -248,7 +248,7 @@ export default function ExcelPage() {
           {/* RESUMEN TAB */}
           <div className="bg-[#141C2E] border border-white/7 rounded-xl overflow-hidden">
             <div className="px-4 py-3 border-b border-white/4">
-              <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>📈 Resumen del mes</span>
+              <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>ðŸ“ˆ Resumen del mes</span>
             </div>
             <div className="p-4 space-y-3">
               {tab === 'ingresos' && (
@@ -265,7 +265,7 @@ export default function ExcelPage() {
               {tab === 'gastos' && (
                 <>
                   <ResumenBar label="Costos directos (6xxx)" valor="$35.9M" pct={40} color="#FF5078" />
-                  <ResumenBar label="Nómina y prest. (51xx)" valor="$22.4M" pct={25} color="#3D7BFF" />
+                  <ResumenBar label="NÃ³mina y prest. (51xx)" valor="$22.4M" pct={25} color="#3D7BFF" />
                   <ResumenBar label="Gastos admon (52xx)"    valor="$16.1M" pct={18} color="#FFB800" />
                   <ResumenBar label="Otros"                  valor="$15.3M" pct={17} color="#8892AA" />
                   <div className="flex justify-between pt-3 border-t border-white/7">
@@ -277,11 +277,11 @@ export default function ExcelPage() {
               {tab === 'nomina' && (
                 <>
                   {[
-                    { k:'Salarios básicos',    v:'$12.400.000', c:'#F0F4FF' },
+                    { k:'Salarios bÃ¡sicos',    v:'$12.400.000', c:'#F0F4FF' },
                     { k:'Aportes salud (8.5%)',v:'$1.054.000', c:'#FF5078' },
-                    { k:'Aportes pensión',     v:'$1.488.000', c:'#FF5078' },
+                    { k:'Aportes pensiÃ³n',     v:'$1.488.000', c:'#FF5078' },
                     { k:'Parafiscales (9%)',   v:'$1.116.000', c:'#FF5078' },
-                    { k:'Prima / Cesantías',   v:'$2.066.000', c:'#FFB800' },
+                    { k:'Prima / CesantÃ­as',   v:'$2.066.000', c:'#FFB800' },
                     { k:'Neto a pagar',        v:'$11.340.000', c:'#00E5B0' },
                   ].map(r => (
                     <div key={r.k} className="flex justify-between text-xs border-b border-white/4 pb-1.5">
@@ -293,9 +293,9 @@ export default function ExcelPage() {
               )}
               {tab === 'bancario' && (
                 <div className="space-y-2">
-                  <div className="flex justify-between text-xs"><span className="text-[#8892AA]">Conciliados</span><span className="text-[#00E5B0] font-semibold">142 ✓</span></div>
-                  <div className="flex justify-between text-xs"><span className="text-[#8892AA]">En revisión</span><span className="text-[#FFB800] font-semibold">7 ⚠</span></div>
-                  <div className="flex justify-between text-xs"><span className="text-[#8892AA]">Sin cruce</span><span className="text-[#FF5078] font-semibold">3 ✗</span></div>
+                  <div className="flex justify-between text-xs"><span className="text-[#8892AA]">Conciliados</span><span className="text-[#00E5B0] font-semibold">142 âœ“</span></div>
+                  <div className="flex justify-between text-xs"><span className="text-[#8892AA]">En revisiÃ³n</span><span className="text-[#FFB800] font-semibold">7 âš </span></div>
+                  <div className="flex justify-between text-xs"><span className="text-[#8892AA]">Sin cruce</span><span className="text-[#FF5078] font-semibold">3 âœ—</span></div>
                   <div className="mt-2 bg-white/5 rounded-lg h-2 overflow-hidden">
                     <div className="h-full bg-[#00E5B0] rounded-lg" style={{ width:'94%' }} />
                   </div>
@@ -308,7 +308,7 @@ export default function ExcelPage() {
           {/* HISTORIAL */}
           <div className="bg-[#141C2E] border border-white/7 rounded-xl overflow-hidden">
             <div className="px-4 py-3 border-b border-white/4">
-              <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>📋 Historial de cargas</span>
+              <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>ðŸ“‹ Historial de cargas</span>
             </div>
             <div className="divide-y divide-white/4">
               {(historial?.archivos || []).slice(0,5).map((a, i) => (
@@ -317,7 +317,7 @@ export default function ExcelPage() {
                   <div className="flex-1 min-w-0">
                     <div className="text-xs font-medium text-[#F0F4FF] truncate">{a.nombre_original}</div>
                     <div className="text-[10px] text-[#8892AA]">
-                      {a.modulo} · {a.filas_ok} registros · {new Date(a.created_at).toLocaleDateString('es-CO')}
+                      {a.modulo} Â· {a.filas_ok} registros Â· {new Date(a.created_at).toLocaleDateString('es-CO')}
                     </div>
                   </div>
                   <span className={`text-[10px] px-2 py-0.5 rounded-full flex-shrink-0
@@ -353,7 +353,7 @@ function ResumenBar({ label, valor, pct, color }) {
   );
 }
 
-// ── IVA PAGE ──────────────────────────────────────────────────────────────────
+// â”€â”€ IVA PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function IVAPage() {
   const [tab, setTab] = useState('iva');
   const { empresaActual } = useEmpresaStore();
@@ -379,19 +379,19 @@ export function IVAPage() {
     } catch { toast.error('Error calculando IVA'); }
   };
 
-  const BIMESTRES_LABELS = ['','Ene–Feb','Mar–Abr','May–Jun','Jul–Ago','Sep–Oct','Nov–Dic'];
+  const BIMESTRES_LABELS = ['','Eneâ€“Feb','Marâ€“Abr','Mayâ€“Jun','Julâ€“Ago','Sepâ€“Oct','Novâ€“Dic'];
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <PageHeader title="IVA, Retenciones &" highlight="Formularios DIAN" sub={empresaActual?.razon_social}>
         <button className="flex items-center gap-2 bg-[#00E5B0] text-[#0A0E1A] px-4 py-2 rounded-xl
                            text-sm font-semibold hover:shadow-[0_6px_20px_rgba(0,229,176,0.3)] transition-all">
-          📤 Presentar ante DIAN
+          ðŸ“¤ Presentar ante DIAN
         </button>
       </PageHeader>
 
       <div className="flex gap-1 bg-[#141C2E] border border-white/7 rounded-xl p-1 mb-6 w-fit">
-        {[['iva','📋 IVA'],['retenciones','🔖 Retenciones'],['formularios','📄 Formularios']].map(([t,l]) => (
+        {[['iva','ðŸ“‹ IVA'],['retenciones','ðŸ”– Retenciones'],['formularios','ðŸ“„ Formularios']].map(([t,l]) => (
           <button key={t} onClick={() => setTab(t)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all
                     ${tab===t ? 'bg-[#1E2A42] text-[#F0F4FF]' : 'text-[#8892AA] hover:text-[#F0F4FF]'}`}>{l}</button>
@@ -401,8 +401,8 @@ export function IVAPage() {
       <div className="grid grid-cols-3 gap-4 mb-6">
         {[
           { label:'IVA generado', valor:'$22.140.000', color:'#FFB800', hint:'Bimestre actual' },
-          { label:'IVA descontable', valor:'$13.820.000', color:'#3D7BFF', hint:'Compras del período' },
-          { label:'IVA a pagar', valor:'$8.320.000', color:'#FF5078', hint:'⚠ Vence en 8 días' },
+          { label:'IVA descontable', valor:'$13.820.000', color:'#3D7BFF', hint:'Compras del perÃ­odo' },
+          { label:'IVA a pagar', valor:'$8.320.000', color:'#FF5078', hint:'âš  Vence en 8 dÃ­as' },
         ].map(k => (
           <div key={k.label} className="bg-[#141C2E] border border-white/7 rounded-xl p-4">
             <div className="text-xs text-[#8892AA] mb-2">{k.label}</div>
@@ -416,7 +416,7 @@ export function IVAPage() {
         <div className="bg-[#141C2E] border border-white/7 rounded-xl overflow-hidden">
           <div className="px-4 py-3 border-b border-white/4 flex items-center justify-between">
             <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>
-              📊 Desglose IVA — Bimestre {BIMESTRES_LABELS[bimestreActual]} {now.getFullYear()}
+              ðŸ“Š Desglose IVA â€” Bimestre {BIMESTRES_LABELS[bimestreActual]} {now.getFullYear()}
             </span>
             <button onClick={calcular} className="text-xs text-[#00E5B0] hover:underline">Recalcular</button>
           </div>
@@ -463,7 +463,7 @@ export function IVAPage() {
         {/* Formulario 300 visual */}
         <div className="bg-[#141C2E] border border-white/7 rounded-xl overflow-hidden">
           <div className="px-4 py-3 border-b border-white/4 flex items-center justify-between">
-            <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>📄 Formulario 300</span>
+            <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>ðŸ“„ Formulario 300</span>
             <span className="text-[10px] bg-[#00E5B0]/10 text-[#00E5B0] px-2 py-0.5 rounded-full">Auto-diligenciado</span>
           </div>
           <div className="p-4">
@@ -471,8 +471,8 @@ export function IVAPage() {
               <div className="bg-gradient-to-r from-[#0a3a7a] to-[#0c1e3d] p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-[9px] text-white/40 uppercase tracking-widest">República de Colombia — DIAN</div>
-                    <div className="text-sm font-bold text-white">Declaración de IVA bimestral</div>
+                    <div className="text-[9px] text-white/40 uppercase tracking-widest">RepÃºblica de Colombia â€” DIAN</div>
+                    <div className="text-sm font-bold text-white">DeclaraciÃ³n de IVA bimestral</div>
                   </div>
                   <div className="text-right">
                     <div className="text-3xl font-black text-[#00E5B0]">300</div>
@@ -482,10 +482,10 @@ export function IVAPage() {
               </div>
               <div className="p-4 space-y-2">
                 {[
-                  { label:'Casilla 66 — Base gravada 19%', val:'98.400.000' },
-                  { label:'Casilla 67 — IVA generado 19%', val:'18.696.000' },
-                  { label:'Casilla 71 — Base gravada 5%',  val:'24.200.000' },
-                  { label:'Casilla 82 — IVA descontable',  val:'13.820.000' },
+                  { label:'Casilla 66 â€” Base gravada 19%', val:'98.400.000' },
+                  { label:'Casilla 67 â€” IVA generado 19%', val:'18.696.000' },
+                  { label:'Casilla 71 â€” Base gravada 5%',  val:'24.200.000' },
+                  { label:'Casilla 82 â€” IVA descontable',  val:'13.820.000' },
                 ].map(f => (
                   <div key={f.label}>
                     <div className="text-[9px] text-[#8892AA] mb-0.5">{f.label}</div>
@@ -495,16 +495,16 @@ export function IVAPage() {
                 ))}
                 <div className="bg-[#00E5B0]/10 border border-[#00E5B0]/25 rounded-xl px-4 py-3
                                 flex items-center justify-between mt-3">
-                  <span className="text-xs text-[#00E5B0]">Casilla 89 — Total a pagar</span>
+                  <span className="text-xs text-[#00E5B0]">Casilla 89 â€” Total a pagar</span>
                   <span className="text-xl font-black text-[#00E5B0]">$8.320.000</span>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2 mt-3">
               <button className="py-2 border border-white/10 rounded-xl text-xs text-[#F0F4FF]
-                                 hover:bg-[#1E2A42] transition-colors">✏️ Editar casillas</button>
+                                 hover:bg-[#1E2A42] transition-colors">âœï¸ Editar casillas</button>
               <button className="py-2 bg-[#00E5B0] text-[#0A0E1A] rounded-xl text-xs font-semibold
-                                 hover:shadow-[0_4px_12px_rgba(0,229,176,0.3)] transition-all">📤 Presentar</button>
+                                 hover:shadow-[0_4px_12px_rgba(0,229,176,0.3)] transition-all">ðŸ“¤ Presentar</button>
             </div>
           </div>
         </div>
@@ -513,8 +513,14 @@ export function IVAPage() {
   );
 }
 
-// ── DIAN PAGE ─────────────────────────────────────────────────────────────────
+// â”€â”€ DIAN PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function DIANPage() {
+  const [modalFE, setModalFE] = useState(false);
+  const [loadingFE, setLoadingFE] = useState(false);
+  const [formFE, setFormFE] = useState({
+    receptor_nit: '', receptor_nombre: '', descripcion: '',
+    subtotal: '', iva_tarifa: '19', fecha_emision: new Date().toISOString().slice(0,10)
+  });
   const { empresaActual } = useEmpresaStore();
   const { data: resumen } = useQuery({
     queryKey: ['dian-resumen', empresaActual?.id],
@@ -529,11 +535,12 @@ export function DIANPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <PageHeader title="DIAN &" highlight="Facturación Electrónica" sub={empresaActual?.razon_social}>
-        <button className="flex items-center gap-2 bg-[#3D7BFF] text-white px-4 py-2 rounded-xl
-                           text-sm font-semibold hover:shadow-[0_6px_20px_rgba(61,123,255,0.3)] transition-all">
-          📤 Emitir FE
-        </button>
+      <PageHeader title="DIAN &" highlight="FacturaciÃ³n ElectrÃ³nica" sub={empresaActual?.razon_social}>
+       <button onClick={() => setModalFE(true)}
+        className="flex items-center gap-2 bg-[#3D7BFF] text-white px-4 py-2 rounded-xl
+                   text-sm font-semibold hover:shadow-[0_6px_20px_rgba(61,123,255,0.3)] transition-all">
+  ðŸ“¤ Emitir FE
+</button>
       </PageHeader>
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
@@ -553,7 +560,7 @@ export function DIANPage() {
 
       <div className="bg-[#141C2E] border border-white/7 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/4 flex items-center justify-between">
-          <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>🧾 Facturas electrónicas</span>
+          <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>ðŸ§¾ Facturas electrÃ³nicas</span>
           <div className="flex gap-2">
             <span className="text-[10px] bg-[#00E5B0]/10 text-[#00E5B0] px-2 py-0.5 rounded-full">Recibidas</span>
             <span className="text-[10px] bg-[#3D7BFF]/10 text-[#3D7BFF] px-2 py-0.5 rounded-full">Emitidas</span>
@@ -563,7 +570,7 @@ export function DIANPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-white/5">
-                {['Número FE','Tipo','Empresa','Fecha','Total','Estado'].map(h => (
+                {['NÃºmero FE','Tipo','Empresa','Fecha','Total','Estado'].map(h => (
                   <th key={h} className="text-[10px] font-semibold uppercase tracking-wider text-[#8892AA]
                                          text-left px-4 py-2.5">{h}</th>
                 ))}
@@ -590,7 +597,7 @@ export function DIANPage() {
                   </td>
                   <td className="px-4 py-2.5">
                     <span className="bg-[#00E5B0]/10 text-[#00E5B0] px-2 py-0.5 rounded-full text-[10px]">
-                      {fe.estado_dian || 'Válida'}
+                      {fe.estado_dian || 'VÃ¡lida'}
                     </span>
                   </td>
                 </tr>
@@ -600,6 +607,75 @@ export function DIANPage() {
         </div>
       </div>
     </div>
+    {modalFE && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0D1525] border border-white/10 rounded-2xl w-full max-w-md shadow-2xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/7">
+              <span className="font-bold" style={{ fontFamily:'Syne,sans-serif' }}>ðŸ“¤ Emitir Factura ElectrÃ³nica</span>
+              <button onClick={() => setModalFE(false)} className="text-[#8892AA] hover:text-[#F0F4FF]">âœ•</button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="text-xs text-[#8892AA] mb-1.5 block">NIT Receptor *</label>
+                <input value={formFE.receptor_nit} onChange={e => setFormFE(p=>({...p, receptor_nit: e.target.value}))} placeholder="900123456" className="w-full bg-[#141C2E] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#F0F4FF] placeholder-[#8892AA] focus:outline-none focus:border-[#3D7BFF]/50 transition-colors"/>
+              </div>
+              <div>
+                <label className="text-xs text-[#8892AA] mb-1.5 block">Nombre Receptor *</label>
+                <input value={formFE.receptor_nombre} onChange={e => setFormFE(p=>({...p, receptor_nombre: e.target.value}))} placeholder="Empresa Receptora SAS" className="w-full bg-[#141C2E] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#F0F4FF] placeholder-[#8892AA] focus:outline-none focus:border-[#3D7BFF]/50 transition-colors"/>
+              </div>
+              <div>
+                <label className="text-xs text-[#8892AA] mb-1.5 block">DescripciÃ³n *</label>
+                <input value={formFE.descripcion} onChange={e => setFormFE(p=>({...p, descripcion: e.target.value}))} placeholder="Servicios contables mayo 2026" className="w-full bg-[#141C2E] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#F0F4FF] placeholder-[#8892AA] focus:outline-none focus:border-[#3D7BFF]/50 transition-colors"/>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs text-[#8892AA] mb-1.5 block">Subtotal *</label>
+                  <input value={formFE.subtotal} onChange={e => setFormFE(p=>({...p, subtotal: e.target.value}))} placeholder="1000000" type="number" className="w-full bg-[#141C2E] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#F0F4FF] placeholder-[#8892AA] focus:outline-none focus:border-[#3D7BFF]/50 transition-colors"/>
+                </div>
+                <div>
+                  <label className="text-xs text-[#8892AA] mb-1.5 block">IVA %</label>
+                  <select value={formFE.iva_tarifa} onChange={e => setFormFE(p=>({...p, iva_tarifa: e.target.value}))} className="w-full bg-[#141C2E] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#F0F4FF] focus:outline-none focus:border-[#3D7BFF]/50 transition-colors">
+                    <option value="19">19%</option>
+                    <option value="5">5%</option>
+                    <option value="0">0%</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="text-xs text-[#8892AA] mb-1.5 block">Fecha emisiÃ³n</label>
+                <input value={formFE.fecha_emision} onChange={e => setFormFE(p=>({...p, fecha_emision: e.target.value}))} type="date" className="w-full bg-[#141C2E] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#F0F4FF] focus:outline-none focus:border-[#3D7BFF]/50 transition-colors"/>
+              </div>
+            </div>
+            <div className="px-6 pb-6 flex gap-3">
+              <button onClick={() => setModalFE(false)} className="flex-1 py-2.5 border border-white/10 rounded-xl text-sm text-[#8892AA] hover:bg-[#1E2A42] transition-colors">Cancelar</button>
+              <button onClick={async () => {
+                if (!formFE.receptor_nit || !formFE.receptor_nombre || !formFE.subtotal) return toast.error('Completa los campos obligatorios');
+                setLoadingFE(true);
+                try {
+                  const subtotal = parseFloat(formFE.subtotal);
+                  const iva = subtotal * (parseFloat(formFE.iva_tarifa) / 100);
+                  const { dianService } = await import('../services/api');
+                  await dianService.emitirFE({
+                    receptor_nit: formFE.receptor_nit,
+                    receptor_nombre: formFE.receptor_nombre,
+                    descripcion: formFE.descripcion,
+                    subtotal, iva_19: iva, total: subtotal + iva,
+                    fecha_emision: formFE.fecha_emision,
+                    tipo: 'emitida'
+                  });
+                  toast.success('Â¡Factura electrÃ³nica emitida!');
+                  setModalFE(false);
+                  setFormFE({ receptor_nit:'', receptor_nombre:'', descripcion:'', subtotal:'', iva_tarifa:'19', fecha_emision: new Date().toISOString().slice(0,10) });
+                } catch { toast.error('Error emitiendo FE'); }
+                finally { setLoadingFE(false); }
+              }} disabled={loadingFE} className="flex-1 py-2.5 bg-[#3D7BFF] text-white rounded-xl text-sm font-semibold disabled:opacity-50 transition-all hover:shadow-[0_6px_20px_rgba(61,123,255,0.3)]">
+                {loadingFE ? 'Emitiendo...' : 'Emitir FE'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+  </div>
   );
 }
 
@@ -611,7 +687,7 @@ const DEMO_FE = [
   { numero:'FV-2025-0087', tipo:'emitida',  receptor_nombre:'Arrendatario A3',     fecha:'07/05/2025', total:3808000,  estado_dian:'pendiente' },
 ];
 
-// ── NOMINA PAGE ───────────────────────────────────────────────────────────────
+// â”€â”€ NOMINA PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function NominaPage() {
   const { empresaActual } = useEmpresaStore();
   const { data } = useQuery({
@@ -625,9 +701,9 @@ export function NominaPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <PageHeader title="Nómina &" highlight="PILA" sub={empresaActual?.razon_social}>
-   <button onClick={async () => { if (!ultimo) return toast.error('No hay períodos de nómina'); try { const { data } = await nominaService.generarPILA(ultimo.id); descargarBlob(data, `pila_${ultimo.mes}_${ultimo.anio}.xlsx`); toast.success('PILA generada correctamente'); } catch { toast.error('Error generando PILA'); } }} className="flex items-center gap-2 bg-[#00E5B0] text-[#0A0E1A] px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:shadow-[0_6px_20px_rgba(0,229,176,0.3)]">
-  📄 Generar PILA
+      <PageHeader title="NÃ³mina &" highlight="PILA" sub={empresaActual?.razon_social}>
+   <button onClick={async () => { if (!ultimo) return toast.error('No hay perÃ­odos de nÃ³mina'); try { const { data } = await nominaService.generarPILA(ultimo.id); descargarBlob(data, `pila_${ultimo.mes}_${ultimo.anio}.xlsx`); toast.success('PILA generada correctamente'); } catch { toast.error('Error generando PILA'); } }} className="flex items-center gap-2 bg-[#00E5B0] text-[#0A0E1A] px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:shadow-[0_6px_20px_rgba(0,229,176,0.3)]">
+  ðŸ“„ Generar PILA
 </button>
       </PageHeader>
 
@@ -647,21 +723,21 @@ export function NominaPage() {
         </div>
       ) : (
         <div className="bg-[#141C2E] border border-white/7 rounded-xl p-12 text-center mb-6">
-          <div className="text-4xl mb-3">👥</div>
-          <div className="font-bold text-[#F0F4FF] mb-2">Sin períodos de nómina</div>
-          <p className="text-sm text-[#8892AA]">Carga tu primer archivo de nómina desde el módulo Excel.</p>
+          <div className="text-4xl mb-3">ðŸ‘¥</div>
+          <div className="font-bold text-[#F0F4FF] mb-2">Sin perÃ­odos de nÃ³mina</div>
+          <p className="text-sm text-[#8892AA]">Carga tu primer archivo de nÃ³mina desde el mÃ³dulo Excel.</p>
         </div>
       )}
 
       <div className="bg-[#141C2E] border border-white/7 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/4">
-          <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>📋 Períodos de nómina</span>
+          <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>ðŸ“‹ PerÃ­odos de nÃ³mina</span>
         </div>
         {periodos.length > 0 ? (
           <table className="w-full">
             <thead>
               <tr className="border-b border-white/5">
-                {['Período','Empleados','Salarios','Parafiscales','Neto','Estado',''].map(h => (
+                {['PerÃ­odo','Empleados','Salarios','Parafiscales','Neto','Estado',''].map(h => (
                   <th key={h} className="text-[10px] font-semibold uppercase tracking-wider text-[#8892AA]
                                          text-left px-4 py-2.5">{h}</th>
                 ))}
@@ -683,7 +759,7 @@ export function NominaPage() {
                     </span>
                   </td>
                   <td className="px-4 py-2.5">
-                    <button className="text-xs text-[#3D7BFF] hover:underline">PILA →</button>
+                    <button className="text-xs text-[#3D7BFF] hover:underline">PILA â†’</button>
                   </td>
                 </tr>
               ))}
@@ -697,7 +773,7 @@ export function NominaPage() {
   );
 }
 
-// ── REPORTES PAGE ─────────────────────────────────────────────────────────────
+// â”€â”€ REPORTES PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function ReportesPage() {
   const [tab, setTab] = useState('balance');
   const { empresaActual } = useEmpresaStore();
@@ -725,7 +801,7 @@ export function ReportesPage() {
       </PageHeader>
 
       <div className="flex gap-1 bg-[#141C2E] border border-white/7 rounded-xl p-1 mb-6 w-fit">
-        {[['balance','📊 Balance'],['pyg','📈 P&G'],['libro','📚 Libro Mayor']].map(([t,l]) => (
+        {[['balance','ðŸ“Š Balance'],['pyg','ðŸ“ˆ P&G'],['libro','ðŸ“š Libro Mayor']].map(([t,l]) => (
           <button key={t} onClick={() => setTab(t)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all
                     ${tab===t ? 'bg-[#1E2A42] text-[#F0F4FF]' : 'text-[#8892AA] hover:text-[#F0F4FF]'}`}>{l}</button>
@@ -735,14 +811,14 @@ export function ReportesPage() {
       {tab === 'balance' && (
         <div className="grid grid-cols-2 gap-5">
           {[
-            { title:'🟢 ACTIVOS', items: [
+            { title:'ðŸŸ¢ ACTIVOS', items: [
               { cuenta:'1105', desc:'Caja', saldo:'$12.400.000', color:'#F0F4FF' },
-              { cuenta:'1110', desc:'Bancos — Bancolombia', saldo:'$84.320.000', color:'#F0F4FF' },
-              { cuenta:'1305', desc:'Clientes — cartera', saldo:'$224.800.000', color:'#F0F4FF' },
+              { cuenta:'1110', desc:'Bancos â€” Bancolombia', saldo:'$84.320.000', color:'#F0F4FF' },
+              { cuenta:'1305', desc:'Clientes â€” cartera', saldo:'$224.800.000', color:'#F0F4FF' },
               { cuenta:'1470', desc:'Inventarios materiales', saldo:'$142.420.000', color:'#F0F4FF' },
               { cuenta:'1516', desc:'Construcciones en curso', saldo:'$198.400.000', color:'#F0F4FF' },
             ], total:'$824.340.000', totalColor:'#00E5B0' },
-            { title:'🔴 PASIVOS + PATRIMONIO', items: [
+            { title:'ðŸ”´ PASIVOS + PATRIMONIO', items: [
               { cuenta:'2205', desc:'Proveedores', saldo:'$68.400.000', color:'#FF5078' },
               { cuenta:'2365', desc:'ReteFuente por pagar', saldo:'$4.218.000', color:'#FF5078' },
               { cuenta:'2368', desc:'IVA por pagar', saldo:'$8.320.000', color:'#FF5078' },
@@ -778,7 +854,7 @@ export function ReportesPage() {
         <div className="bg-[#141C2E] border border-white/7 rounded-xl overflow-hidden">
           <div className="px-4 py-3 border-b border-white/4">
             <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>
-              📋 Estado de Resultados — {pyg ? `${pyg.periodo?.desde} al ${pyg.periodo?.hasta}` : 'Enero–Abril 2025'}
+              ðŸ“‹ Estado de Resultados â€” {pyg ? `${pyg.periodo?.desde} al ${pyg.periodo?.hasta}` : 'Eneroâ€“Abril 2025'}
             </span>
           </div>
           <div className="p-4 space-y-1">
@@ -786,9 +862,9 @@ export function ReportesPage() {
               { label:'INGRESOS OPERACIONALES', val: pyg?.ingresos || 483200000, type:'section', color:'#00E5B0' },
               { label:'(-) COSTOS DE VENTAS',   val: pyg?.costos  || 238400000, type:'section', color:'#FF5078' },
               { label:'UTILIDAD BRUTA',          val: pyg?.utilidad_bruta || 244800000, type:'total', color:'#00E5B0' },
-              { label:'(-) Gastos administración', val: pyg?.gastos_admon || 74400000, type:'normal', color:'#FF5078' },
+              { label:'(-) Gastos administraciÃ³n', val: pyg?.gastos_admon || 74400000, type:'normal', color:'#FF5078' },
               { label:'(-) Gastos de ventas',     val: pyg?.gastos_ventas || 16100000, type:'normal', color:'#FF5078' },
-              { label:'(-) Nómina y prestaciones',val: pyg?.nomina || 57700000, type:'normal', color:'#FF5078' },
+              { label:'(-) NÃ³mina y prestaciones',val: pyg?.nomina || 57700000, type:'normal', color:'#FF5078' },
               { label:'UTILIDAD OPERACIONAL',     val: pyg?.utilidad_operacional || 96600000, type:'total', color:'#3D7BFF' },
               { label:'(-) Gastos financieros',   val: pyg?.gastos_financieros || 18400000, type:'normal', color:'#FF5078' },
               { label:'UTILIDAD ANTES IMPUESTOS', val: pyg?.utilidad_antes_impuestos || 78200000, type:'total', color:'#FFB800' },
@@ -814,20 +890,20 @@ export function ReportesPage() {
 
       {tab === 'libro' && (
         <div className="bg-[#141C2E] border border-white/7 rounded-xl p-8 text-center">
-          <div className="text-4xl mb-3">📚</div>
+          <div className="text-4xl mb-3">ðŸ“š</div>
           <div className="font-bold text-[#F0F4FF] mb-2">Libro Mayor por cuenta</div>
           <p className="text-sm text-[#8892AA] mb-4">Selecciona una cuenta del PUC para ver su auxiliar completo.</p>
-          <input placeholder="🔍 Buscar cuenta o código PUC..." className={`${inputBaseCls} max-w-sm mx-auto`} />
+          <input placeholder="ðŸ” Buscar cuenta o cÃ³digo PUC..." className={`${inputBaseCls} max-w-sm mx-auto`} />
         </div>
       )}
     </div>
   );
 }
 
-// ── ASISTENTE IA PAGE ─────────────────────────────────────────────────────────
+// â”€â”€ ASISTENTE IA PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function AsistentePage() {
   const [msgs, setMsgs]   = useState([
-    { rol:'assistant', contenido:'¡Hola! Soy tu asistente contable ContaFlow. Conozco la normativa tributaria colombiana, el PUC y las NIIF para PYMES.\n\nPuedo ayudarte con:\n• Retenciones e IVA\n• Clasificación PUC\n• Vencimientos DIAN\n• Estrategia tributaria\n\n¿Qué necesitas hoy?' }
+    { rol:'assistant', contenido:'Â¡Hola! Soy tu asistente contable ContaFlow. Conozco la normativa tributaria colombiana, el PUC y las NIIF para PYMES.\n\nPuedo ayudarte con:\nâ€¢ Retenciones e IVA\nâ€¢ ClasificaciÃ³n PUC\nâ€¢ Vencimientos DIAN\nâ€¢ Estrategia tributaria\n\nÂ¿QuÃ© necesitas hoy?' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoad] = useState(false);
@@ -845,16 +921,16 @@ export function AsistentePage() {
       const { data } = await iaService.chat(msg);
       setMsgs(p => [...p, { rol:'assistant', contenido: data.respuesta }]);
     } catch {
-      setMsgs(p => [...p, { rol:'assistant', contenido: 'Lo siento, ocurrió un error. Intenta de nuevo.' }]);
+      setMsgs(p => [...p, { rol:'assistant', contenido: 'Lo siento, ocurriÃ³ un error. Intenta de nuevo.' }]);
     } finally { setLoad(false); setTimeout(() => bottomRef.current?.scrollIntoView({ behavior:'smooth' }), 100); }
   };
 
   const QUICK = [
-    '¿Cuál es la tarifa de ReteFuente para honorarios?',
-    '¿Cuándo vence el IVA bimestral?',
-    '¿Cómo clasifico un gasto de software en el PUC?',
-    '¿Qué es el régimen SIMPLE de tributación?',
-    'Explícame los indicadores financieros clave',
+    'Â¿CuÃ¡l es la tarifa de ReteFuente para honorarios?',
+    'Â¿CuÃ¡ndo vence el IVA bimestral?',
+    'Â¿CÃ³mo clasifico un gasto de software en el PUC?',
+    'Â¿QuÃ© es el rÃ©gimen SIMPLE de tributaciÃ³n?',
+    'ExplÃ­came los indicadores financieros clave',
   ];
 
   return (
@@ -863,12 +939,12 @@ export function AsistentePage() {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
         <div className="px-6 py-4 border-b border-white/7 bg-[#0D1525] flex items-center gap-3 flex-shrink-0">
-          <div className="w-9 h-9 rounded-full bg-[#00E5B0]/15 flex items-center justify-center text-lg">🤖</div>
+          <div className="w-9 h-9 rounded-full bg-[#00E5B0]/15 flex items-center justify-center text-lg">ðŸ¤–</div>
           <div>
             <div className="text-sm font-bold text-[#F0F4FF]">Asistente ContaFlow IA</div>
             <div className="flex items-center gap-1.5 text-xs text-[#00E5B0]">
               <div className="w-1.5 h-1.5 rounded-full bg-[#00E5B0] animate-pulse" />
-              En línea · Normativa colombiana actualizada
+              En lÃ­nea Â· Normativa colombiana actualizada
             </div>
           </div>
         </div>
@@ -879,7 +955,7 @@ export function AsistentePage() {
             <div key={i} className={`flex gap-2.5 max-w-[80%] ${m.rol==='user' ? 'ml-auto flex-row-reverse' : ''}`}>
               <div className={`w-7 h-7 rounded-full flex items-center justify-center text-sm flex-shrink-0 mt-1
                 ${m.rol==='user' ? 'bg-[#3D7BFF]/20' : 'bg-[#00E5B0]/15'}`}>
-                {m.rol==='user' ? '👤' : '🤖'}
+                {m.rol==='user' ? 'ðŸ‘¤' : 'ðŸ¤–'}
               </div>
               <div className={`px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap
                 ${m.rol==='user'
@@ -891,7 +967,7 @@ export function AsistentePage() {
           ))}
           {loading && (
             <div className="flex gap-2.5 max-w-[80%]">
-              <div className="w-7 h-7 rounded-full bg-[#00E5B0]/15 flex items-center justify-center text-sm flex-shrink-0">🤖</div>
+              <div className="w-7 h-7 rounded-full bg-[#00E5B0]/15 flex items-center justify-center text-sm flex-shrink-0">ðŸ¤–</div>
               <div className="px-4 py-3 bg-[#141C2E] border border-white/7 rounded-2xl rounded-tl-sm">
                 <div className="flex gap-1.5">
                   {[0,1,2].map(i => (
@@ -922,14 +998,14 @@ export function AsistentePage() {
           <div className="flex gap-2 items-end">
             <textarea value={input} onChange={e => setInput(e.target.value)}
                       onKeyDown={e => { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
-                      placeholder="Pregunta sobre contabilidad, tributación colombiana, DIAN..."
+                      placeholder="Pregunta sobre contabilidad, tributaciÃ³n colombiana, DIAN..."
                       rows={1} className={`flex-1 resize-none ${inputBaseCls}`}
                       style={{ maxHeight:'100px' }} />
             <button onClick={() => send()} disabled={!input.trim() || loading}
                     className="w-10 h-10 rounded-xl bg-[#00E5B0] flex items-center justify-center
                                text-[#0A0E1A] hover:shadow-[0_4px_14px_rgba(0,229,176,0.35)]
                                disabled:opacity-40 disabled:cursor-not-allowed transition-all flex-shrink-0">
-              {loading ? <Loader2 size={16} className="animate-spin"/> : '➤'}
+              {loading ? <Loader2 size={16} className="animate-spin"/> : 'âž¤'}
             </button>
           </div>
         </div>
@@ -938,13 +1014,13 @@ export function AsistentePage() {
       {/* SIDEBAR ALERTAS */}
       <div className="w-72 border-l border-white/7 bg-[#0D1525] flex flex-col overflow-y-auto flex-shrink-0">
         <div className="px-4 py-3 border-b border-white/7">
-          <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>💡 Alertas IA</span>
+          <span className="text-sm font-bold" style={{ fontFamily:'Syne,sans-serif' }}>ðŸ’¡ Alertas IA</span>
         </div>
         <div className="p-4 space-y-3 flex-1">
           {[
-            { tipo:'danger', icon:'⚠️', titulo:'IVA vence en 8 días', desc:'$8.320.000 · Form. 300 pre-liquidado' },
-            { tipo:'warning',icon:'📉', titulo:'Margen bajó 2.3 pts', desc:'Posible alza en costos de materiales' },
-            { tipo:'success',icon:'✅', titulo:'Conciliación 94%',    desc:'Revisar 3 partidas pendientes' },
+            { tipo:'danger', icon:'âš ï¸', titulo:'IVA vence en 8 dÃ­as', desc:'$8.320.000 Â· Form. 300 pre-liquidado' },
+            { tipo:'warning',icon:'ðŸ“‰', titulo:'Margen bajÃ³ 2.3 pts', desc:'Posible alza en costos de materiales' },
+            { tipo:'success',icon:'âœ…', titulo:'ConciliaciÃ³n 94%',    desc:'Revisar 3 partidas pendientes' },
           ].map((a, i) => (
             <div key={i} className={`p-3 rounded-xl border text-xs
               ${a.tipo==='danger'  ? 'bg-[#FF5078]/5 border-[#FF5078]/15'
@@ -961,8 +1037,8 @@ export function AsistentePage() {
           <div className="border-t border-white/7 pt-3">
             <div className="text-xs font-semibold text-[#8892AA] uppercase tracking-wider mb-3">Normativa reciente</div>
             {[
-              { dec:'Decreto 0175/2025', desc:'Nuevos plazos declaración renta personas naturales' },
-              { dec:'Resolución DIAN',  desc:'Actualización tarifas ReteICA 2025' },
+              { dec:'Decreto 0175/2025', desc:'Nuevos plazos declaraciÃ³n renta personas naturales' },
+              { dec:'ResoluciÃ³n DIAN',  desc:'ActualizaciÃ³n tarifas ReteICA 2025' },
             ].map((n, i) => (
               <div key={i} className="mb-2.5">
                 <div className="text-xs font-semibold text-[#3D7BFF]">{n.dec}</div>
@@ -978,20 +1054,20 @@ export function AsistentePage() {
   );
 }
 
-// ── CONFIG PAGE ───────────────────────────────────────────────────────────────
+// â”€â”€ CONFIG PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function ConfigPage() {
   const { empresaActual } = useEmpresaStore();
   return (
     <div className="p-6 max-w-3xl mx-auto">
-      <PageHeader title="Configuración" highlight="del sistema" sub={empresaActual?.razon_social} />
+      <PageHeader title="ConfiguraciÃ³n" highlight="del sistema" sub={empresaActual?.razon_social} />
       <div className="space-y-4">
         {[
-          { title:'🏢 Datos de la empresa', desc:'NIT, régimen, dirección, CIIU', action:'Editar' },
-          { title:'🔑 Token DIAN',         desc:'Certificado digital y conexión', action:'Gestionar' },
-          { title:'👥 Usuarios y roles',   desc:'Invitar contador o auxiliar',    action:'Gestionar' },
-          { title:'📊 Plan de cuentas',    desc:'PUC personalizado',              action:'Ver PUC' },
-          { title:'🔔 Notificaciones',     desc:'Alertas de vencimientos DIAN',   action:'Configurar' },
-          { title:'🔒 Seguridad',          desc:'Contraseña y 2FA',               action:'Cambiar' },
+          { title:'ðŸ¢ Datos de la empresa', desc:'NIT, rÃ©gimen, direcciÃ³n, CIIU', action:'Editar' },
+          { title:'ðŸ”‘ Token DIAN',         desc:'Certificado digital y conexiÃ³n', action:'Gestionar' },
+          { title:'ðŸ‘¥ Usuarios y roles',   desc:'Invitar contador o auxiliar',    action:'Gestionar' },
+          { title:'ðŸ“Š Plan de cuentas',    desc:'PUC personalizado',              action:'Ver PUC' },
+          { title:'ðŸ”” Notificaciones',     desc:'Alertas de vencimientos DIAN',   action:'Configurar' },
+          { title:'ðŸ”’ Seguridad',          desc:'ContraseÃ±a y 2FA',               action:'Cambiar' },
         ].map((s, i) => (
           <div key={i} className="bg-[#141C2E] border border-white/7 rounded-xl p-4
                                    flex items-center justify-between hover:border-white/12 transition-colors">
@@ -999,7 +1075,7 @@ export function ConfigPage() {
               <div className="text-sm font-semibold text-[#F0F4FF]">{s.title}</div>
               <div className="text-xs text-[#8892AA] mt-0.5">{s.desc}</div>
             </div>
-           <button onClick={() => toast.success(`${s.action}: próximamente disponible`)} className="text-xs text-[#00E5B0] font-medium hover:underline">{s.action} →</button>
+           <button onClick={() => toast.success(`${s.action}: prÃ³ximamente disponible`)} className="text-xs text-[#00E5B0] font-medium hover:underline">{s.action} â†’</button>
           </div>
         ))}
       </div>
@@ -1007,5 +1083,6 @@ export function ConfigPage() {
   );
 }
 
-// ── ONBOARDING PAGE ───────────────────────────────────────────────────────────
+// â”€â”€ ONBOARDING PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function OnboardingPage(){window.location.replace('/dashboard');return null;}
+
