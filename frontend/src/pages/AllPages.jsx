@@ -606,6 +606,26 @@ export function DIANPage() {
           </table>
         </div>
       </div>
+      {modalFE && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0D1525] border border-white/10 rounded-2xl w-full max-w-md shadow-2xl">
+            <div className="flex items-center justify-between px-6 py-4">
+              <span className="font-bold">Emitir Factura Electronica</span>
+              <button onClick={() => setModalFE(false)} className="text-[#8892AA]">X</button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div><label className="text-xs text-[#8892AA] mb-1.5 block">NIT Receptor *</label><input value={formFE.receptor_nit} onChange={e => setFormFE(p=>({...p, receptor_nit: e.target.value}))} placeholder="900123456" className="w-full bg-[#141C2E] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#F0F4FF]"/></div>
+              <div><label className="text-xs text-[#8892AA] mb-1.5 block">Nombre Receptor *</label><input value={formFE.receptor_nombre} onChange={e => setFormFE(p=>({...p, receptor_nombre: e.target.value}))} placeholder="Empresa Receptora SAS" className="w-full bg-[#141C2E] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#F0F4FF]"/></div>
+              <div><label className="text-xs text-[#8892AA] mb-1.5 block">Descripcion *</label><input value={formFE.descripcion} onChange={e => setFormFE(p=>({...p, descripcion: e.target.value}))} placeholder="Servicios contables" className="w-full bg-[#141C2E] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#F0F4FF]"/></div>
+              <div><label className="text-xs text-[#8892AA] mb-1.5 block">Subtotal *</label><input value={formFE.subtotal} onChange={e => setFormFE(p=>({...p, subtotal: e.target.value}))} placeholder="1000000" type="number" className="w-full bg-[#141C2E] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#F0F4FF]"/></div>
+            </div>
+            <div className="px-6 pb-6 flex gap-3">
+              <button onClick={() => setModalFE(false)} className="flex-1 py-2.5 border border-white/10 rounded-xl text-sm text-[#8892AA]">Cancelar</button>
+              <button onClick={async () => { if (!formFE.receptor_nit||!formFE.receptor_nombre||!formFE.subtotal) return toast.error("Completa los campos"); setLoadingFE(true); try { const subtotal=parseFloat(formFE.subtotal); const iva=subtotal*(parseFloat(formFE.iva_tarifa)/100); const {dianService}=await import("../services/api"); await dianService.emitirFE({receptor_nit:formFE.receptor_nit,receptor_nombre:formFE.receptor_nombre,descripcion:formFE.descripcion,subtotal,iva_19:iva,total:subtotal+iva,fecha_emision:formFE.fecha_emision,tipo:"emitida"}); toast.success("Factura emitida!"); setModalFE(false); } catch { toast.error("Error"); } finally { setLoadingFE(false); } }} disabled={loadingFE} className="flex-1 py-2.5 bg-[#3D7BFF] text-white rounded-xl text-sm font-semibold">{loadingFE ? "Emitiendo..." : "Emitir FE"}</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
