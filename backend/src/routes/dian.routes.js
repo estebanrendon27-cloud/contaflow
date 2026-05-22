@@ -80,6 +80,7 @@ router.post('/fe/emitir', async (req, res, next) => {
       fecha: new Date().toISOString().split('T')[0],
       emisor_nit: empresa.nit, emisor_nombre: empresa.razon_social,
       cliente_nit, cliente_nombre,
+      receptor_nit: cliente_nit, receptor_nombre: cliente_nombre,
       subtotal: Math.round(subtotal), iva: Math.round(iva19 + iva5),
       total: Math.round(total),
     };
