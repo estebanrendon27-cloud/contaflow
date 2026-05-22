@@ -167,7 +167,7 @@ export default function DashboardPage() {
         <div className="flex flex-col gap-5">
 
           {/* VENCIMIENTOS */}
-          <Card title="📅 Vencimientos DIAN" action={{ label: 'Ver todos →', to: '/iva' }}>
+          <Card title="📅 Vencimientos DIAN" action={{ label: 'Ver todos →', to: '/dian' }}>
             {vencimientos.length > 0 ? (
               <div className="space-y-3">
                 {vencimientos.slice(0,4).map((v, i) => {
