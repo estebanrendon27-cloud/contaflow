@@ -587,7 +587,7 @@ export function DIANPage() {
                       : 'bg-[#FFB800]/10 text-[#FFB800]'}`}>{fe.tipo}</span>
                   </td>
                   <td className="px-4 py-2.5 text-xs text-[#F0F4FF] max-w-[150px] truncate">
-                    {fe.tipo==='recibida' ? fe.emisor_nombre : fe.receptor_nombre}
+                    {fe.tipo==='recibida' ? fe.emisor_nombre : (fe.receptor_nombre || fe.cliente_nombre)}
                   </td>
                   <td className="px-4 py-2.5 text-xs text-[#8892AA]">
                     {fe.fecha_emision ? new Date(fe.fecha_emision).toLocaleDateString('es-CO') : fe.fecha}
